@@ -11,6 +11,9 @@ jobs:
   update-pr-title:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Extract issue number from branch name
         id: extract_issue
         if: contains(github.head_ref, '#')
