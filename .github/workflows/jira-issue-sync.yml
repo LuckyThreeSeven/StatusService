@@ -7,7 +7,6 @@ on:
     types: [opened]
 
 jobs:
-
   create_jira_issue:
     runs-on: ubuntu-latest
     steps:
@@ -15,7 +14,7 @@ jobs:
         uses: stefanbuck/github-issue-praser@v3
         id: issue-parser
         with:
-          template-path: .github/ISSUE_TEMPLATE/issue-form.yml
+          template-path: .github/ISSUE_TEMPLATE/default.yml
 
       - name: print the pared issue
         run: |
@@ -31,9 +30,8 @@ jobs:
       - name: Create Jira Issue
         uses: atlassian/gajira-create@v3
         with:
-          project: 'NVS'
-          issuetype: 'Task'
-          summary: '[${{ github.event.issue.labels[0].name }}] ${{ github.event.issue.title }}'
+          project: "NVS"
+          issuetype: "Task"
+          summary: "[${{ github.event.issue.labels[0].name }}] ${{ github.event.issue.title }}"
           description: |
             ${{ github.event.issue.body }}
-
