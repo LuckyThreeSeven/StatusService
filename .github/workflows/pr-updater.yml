@@ -29,5 +29,9 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           ISSUE_NUMBER: ${{ steps.extract_issue.outputs.issue_number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+
         run: |
-          gh pr edit $PR_NUMBER --title "[#$ISSUE_NUMBER] $PR_TITLE"
+          gh pr edit $PR_NUMBER \
+          --title "[#$ISSUE_NUMBER] $PR_TITLE" \
+          --body "Closes #${ISSUE_NUMBER}"$'\n\n'"${PR_BODY}"
