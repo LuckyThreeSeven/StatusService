@@ -24,6 +24,30 @@ jobs:
       - name: Print parsed values
         run: echo "${{ toJson(steps.issue.outputs) }}"
 
+      - name: Map Priority Name to ID
+        id: priority
+        run: |
+          PRIORITY_NAME="${{ steps.issue.outputs.issueparser_priority }}"
+          PRIORITY_ID=""
+          case $PRIORITY_NAME in
+            Highest)
+              PRIORITY_ID="1"
+              ;;
+            High)
+              PRIORITY_ID="2"
+              ;;
+            Medium)
+              PRIORITY_ID="3"
+              ;;
+            Low)
+              PRIORITY_ID="4"
+              ;;
+            Lowest)
+              PRIORITY_ID="5"
+              ;;
+          esac
+          echo "priority_id=$PRIORITY_ID" >> $GITHUB_OUTPUT
+
       - name: Login to Jira
         uses: atlassian/gajira-login@v3
         env:
@@ -37,16 +61,16 @@ jobs:
         with:
           project: "NVS"
           issuetype: ${{ steps.issue.outputs.issueparser_jira_issuetype }}
-          summary: "[${{ (github.event.issue.labels[0] && github.event.issue.labels[0].name) || 'chore'}}] ${{ github.event.issue.title }}"
+          summary: "[${{ (github.event.issue.labels[0] && github.event.issue.labels[0].name) || 'chore' }}] ${{ github.event.issue.title }}"
           description: |
-            ${{ steps.issue.outputs.issueparser_description}}
+            ${{ steps.issue.outputs.issueparser_description }}
           fields: |
             {
               "parent": {
-                "key": "${{ steps.issue.outputs.issueparser_parent_task}}"
+                "key": "${{ steps.issue.outputs.issueparser_parent_task }}"
               },
               "priority": {
-                id: "${{ steps.issue.outputs.issueparser_priority}}"
+                "id": "${{ steps.priority.outputs.priority_id }}"
               }
             }
       - name: Update issue title
