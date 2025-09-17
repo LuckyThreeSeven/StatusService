@@ -44,9 +44,6 @@ jobs:
             {
               "parent": {
                 "key": "${{ steps.issue.outputs.issueparser_parent_task }}"
-              },
-              "priority": {
-                "name": "${{ steps.issue.outputs.issueparser_priority }}"
               }
             }
       - name: Update issue title
