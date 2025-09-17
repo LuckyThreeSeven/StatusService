@@ -37,7 +37,7 @@ body:
         - Story
         - Task
         - Sub-task
-      default: 2
+      default: 1
     validations:
       required: true
 
