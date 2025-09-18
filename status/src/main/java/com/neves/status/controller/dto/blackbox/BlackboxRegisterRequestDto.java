@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Schema(description = "블랙박스 등록 요청 DTO")
+@Schema(description = "블랙박스 등록 요청")
 @Getter @Setter
 @AllArgsConstructor
 public class BlackboxRegisterRequestDto {

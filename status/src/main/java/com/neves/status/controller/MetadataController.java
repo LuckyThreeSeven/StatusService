@@ -1,17 +1,22 @@
-package com.neves.status.controller.dto.metadata;
+package com.neves.status.controller;
 
 import com.neves.status.controller.dto.blackbox.MetadataRegisterRequest;
+import com.neves.status.controller.dto.metadata.MetadataResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Metadata", description = "영상 메타데이터를 위한 API")
@@ -34,10 +39,28 @@ public class MetadataController {
 	})
 	@GetMapping
 	public ResponseEntity<List<MetadataResponse>> list(
-			@PathVariable
+			@RequestParam
+			@Schema(description = "블랙박스 UUID", example = "123e4567-e89b-12d3-a456-426614174000")
 			String blackbox_id,
-			@PathVariable
+			@RequestParam
+			@Schema(description = "조회할 날짜", example = "2024-06-15T00:00:00")
 			LocalDateTime date
 	) {
+		return ResponseEntity.ok(List.of(MetadataResponse.example()));
 	}
+
+	@Operation(summary = "영상 삭제", description = "특정 영상을 삭제합니다.")
+	@ApiResponses({
+			@ApiResponse(responseCode = "204", description = "영상 삭제 성공"),
+			@ApiResponse(responseCode = "404", description = "해당 video_id를 찾을 수 없음")
+	})
+	@DeleteMapping("/{video_id}")
+	public ResponseEntity<Void> delete(
+			@PathVariable
+			@Parameter(description = "삭제할 영상의 ID", example = "666a7b29a2862a5b67484344")
+			String video_id
+	) {
+		return ResponseEntity.noContent().build();
+	}
+
 }
