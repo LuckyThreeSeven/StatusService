@@ -1,5 +1,6 @@
 package com.neves.status.event;
 
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -8,12 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class BlackboxEventListener {
 	@EventListener
-	public void handleRegisteredEvent(BlackboxRegisteredEvent e) {
+	public void handleCreatedEvent(BlackboxCreatedEvent e) {
 
 	}
 
 	@EventListener
-	public void handleUpdatedEvent(BlackboxUpdatedEvent e) {
+	public void handleDeletedEvent(BlackboxRenamedEvent e) {
 
 	}
 }

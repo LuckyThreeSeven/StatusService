@@ -2,6 +2,7 @@ package com.neves.status.controller;
 
 import com.neves.status.controller.dto.blackbox.MetadataRegisterRequest;
 import com.neves.status.controller.dto.metadata.MetadataResponse;
+import com.neves.status.service.MetadataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,6 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Metadata", description = "영상 메타데이터를 위한 API")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/metadata")
 public class MetadataController {
+	private final MetadataService metadataService;
+
 	@Operation(summary = "영상 메타데이터 등록", description = "새로운 메타데이터를 저장합니다.")
 	@ApiResponses({
 			@ApiResponse(responseCode = "201", description = "영상 메타데이터 저장 성공")

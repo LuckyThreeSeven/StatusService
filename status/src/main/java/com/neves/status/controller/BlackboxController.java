@@ -2,11 +2,13 @@ package com.neves.status.controller;
 
 import com.neves.status.controller.dto.blackbox.BlackboxRegisterRequestDto;
 import com.neves.status.controller.dto.blackbox.BlackboxResponseDto;
+import com.neves.status.service.BlackboxService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Blackbox", description = "블랙박스 관리를 위한 API")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/blackboxes")
 public class BlackboxController {
+	private final BlackboxService blackboxService;
+
 	@Operation(summary="블랙박스 등록", description="특정 유저의 새로운 블랙박스를 등록합니다.")
 	@ApiResponses({
 			@ApiResponse(responseCode="200", description="블랙박스 등록 성공"),
