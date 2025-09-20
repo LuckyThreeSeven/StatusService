@@ -1,4 +1,4 @@
-package com.neves.status.event;
+package com.neves.status.event.domain;
 
 public class BlackboxRenamedEvent {
 

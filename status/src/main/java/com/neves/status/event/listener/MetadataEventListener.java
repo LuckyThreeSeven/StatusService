@@ -1,5 +1,7 @@
-package com.neves.status.event;
+package com.neves.status.event.listener;
 
+import com.neves.status.event.domain.MetadataCreatedEvent;
+import com.neves.status.event.domain.MetadataDeletedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
