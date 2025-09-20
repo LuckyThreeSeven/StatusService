@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class BlackboxEventListener {
+
 	@EventListener
 	public void handleCreatedEvent(BlackboxCreatedEvent e) {
 
