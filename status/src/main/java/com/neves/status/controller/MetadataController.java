@@ -2,7 +2,8 @@ package com.neves.status.controller;
 
 import com.neves.status.controller.dto.blackbox.MetadataRegisterRequest;
 import com.neves.status.controller.dto.metadata.MetadataResponse;
-import com.neves.status.service.command.MetadataService;
+import com.neves.status.service.command.MetadataCommandService;
+import com.neves.status.service.query.MetadataQueryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,7 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/metadata")
 public class MetadataController {
-	private final MetadataService metadataService;
+	private final MetadataQueryService metadataQueryService;
+	private final MetadataCommandService metadataCommandService;
+
 
 	@Operation(summary = "영상 메타데이터 등록", description = "새로운 메타데이터를 저장합니다.")
 	@ApiResponses({

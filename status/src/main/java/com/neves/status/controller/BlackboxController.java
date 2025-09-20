@@ -2,7 +2,8 @@ package com.neves.status.controller;
 
 import com.neves.status.controller.dto.blackbox.BlackboxRegisterRequestDto;
 import com.neves.status.controller.dto.blackbox.BlackboxResponseDto;
-import com.neves.status.service.BlackboxService;
+import com.neves.status.service.command.BlackboxCommandService;
+import com.neves.status.service.query.BlackboxQueryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,7 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/blackboxes")
 public class BlackboxController {
-	private final BlackboxService blackboxService;
+	private final BlackboxCommandService blackboxCommandService;
+	private final BlackboxQueryService blackboxQueryService;
 
 	@Operation(summary="블랙박스 등록", description="특정 유저의 새로운 블랙박스를 등록합니다.")
 	@ApiResponses({
