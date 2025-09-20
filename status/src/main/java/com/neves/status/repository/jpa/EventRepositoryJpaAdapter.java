@@ -5,11 +5,13 @@ import com.neves.status.repository.EventEntity;
 import com.neves.status.repository.EventRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 /**
  * EventJpaRepository를 사용하여 EventRepository를 구현하는 어댑터
  */
 @RequiredArgsConstructor
+@Repository
 public class EventRepositoryJpaAdapter implements EventRepository {
 	// TODO:
 	private final EventJpaRepository jpaRepository;
