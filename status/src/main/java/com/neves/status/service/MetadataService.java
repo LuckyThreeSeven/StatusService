@@ -4,14 +4,17 @@ import com.neves.status.controller.dto.blackbox.MetadataRegisterRequest;
 import com.neves.status.controller.dto.metadata.MetadataResponse;
 import com.neves.status.repository.Metadata;
 import com.neves.status.repository.MetadataRepository;
+import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class MetadataService {
 	private final MetadataRepository repository;
 
@@ -31,7 +34,7 @@ public class MetadataService {
 
 	public List<MetadataResponse> list(String blackboxId, LocalDateTime startOfDay) {
 		LocalDateTime endOfDay = startOfDay.plusDays(1);
-		List<Metadata> metadataList = repository.findMetadataByBlackboxUuidAndCreatedAtBetween(
+		List<Metadata> metadataList = repository.findMetadataByBlackboxUuidAndCreatedAtBetweenAndDeletedNot(
 				blackboxId,
 				startOfDay,
 				endOfDay
@@ -47,6 +50,7 @@ public class MetadataService {
 	}
 
 	public void delete(String metadataId) {
-		repository.deleteById(metadataId);
+		Optional<Metadata> metadata = repository.findById(metadataId);
+		metadata.ifPresent(data -> data.setDeleted(true));
 	}
 }
