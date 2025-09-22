@@ -34,7 +34,7 @@ public class MetadataService {
 
 	public List<MetadataResponse> list(String blackboxId, LocalDateTime startOfDay) {
 		LocalDateTime endOfDay = startOfDay.plusDays(1);
-		List<Metadata> metadataList = repository.findMetadataByBlackboxUuidAndCreatedAtBetweenAndDeletedNot(
+		List<Metadata> metadataList = repository.findByBlackboxUuidBetween(
 				blackboxId,
 				startOfDay,
 				endOfDay
