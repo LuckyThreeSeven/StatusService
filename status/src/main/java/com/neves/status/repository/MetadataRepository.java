@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MetadataRepository extends JpaRepository<Metadata, String> {
-	List<Metadata> findMetadataByBlackboxUuid(String blackboxUuid, LocalDateTime date);
+	List<Metadata> findMetadataByBlackboxUuidAndCreatedAtBetween(String blackboxUuid, LocalDateTime start, LocalDateTime end);
 }

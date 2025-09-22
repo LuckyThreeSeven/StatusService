@@ -29,8 +29,13 @@ public class MetadataService {
 		repository.save(metadata);
 	}
 
-	public List<MetadataResponse> list(String blackboxId, LocalDateTime date) {
-		List<Metadata> metadataList = repository.findMetadataByBlackboxUuid(blackboxId, date);
+	public List<MetadataResponse> list(String blackboxId, LocalDateTime startOfDay) {
+		LocalDateTime endOfDay = startOfDay.plusDays(1);
+		List<Metadata> metadataList = repository.findMetadataByBlackboxUuidAndCreatedAtBetween(
+				blackboxId,
+				startOfDay,
+				endOfDay
+		);
 		return metadataList.stream()
 				.map(data -> MetadataResponse.builder()
 						.object_key(data.getObjectKey())
