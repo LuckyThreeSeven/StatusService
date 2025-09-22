@@ -12,9 +12,9 @@ import lombok.Setter; // Add this
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter // Add this
+@Setter
 @Entity
-@Builder // Add this
+@Builder
 public class Blackbox {
 	@Id
 	private String uuid;
