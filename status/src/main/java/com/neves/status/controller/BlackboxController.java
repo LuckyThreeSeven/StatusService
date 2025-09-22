@@ -1,6 +1,7 @@
 package com.neves.status.controller;
 
 import com.neves.status.controller.dto.blackbox.BlackboxRegisterRequestDto;
+import com.neves.status.controller.dto.blackbox.BlackboxRenameRequestDto;
 import com.neves.status.controller.dto.blackbox.BlackboxResponseDto;
 import com.neves.status.service.BlackboxService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,7 +52,7 @@ public class BlackboxController {
 	@PutMapping("/{blackbox_id}")
 	public ResponseEntity<Object> rename(
 			@PathVariable("blackbox_id") String blackbox_id,
-			@RequestBody BlackboxRegisterRequestDto request) {
+			@RequestBody BlackboxRenameRequestDto request) {
 		try {
 			BlackboxResponseDto response = blackboxService.rename(blackbox_id, request);
 			return ResponseEntity.ok(response);

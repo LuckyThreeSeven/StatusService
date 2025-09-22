@@ -18,13 +18,13 @@ public class MetadataService {
 	public void create(UUID metadataId, MetadataRegisterRequest request) {
 		Metadata metadata = Metadata.builder()
 				.id(metadataId.toString())
-				.blackboxUuid(request.getBlackbox_uuid())
-				.streamStartedAt(request.getStream_started_at())
-				.createdAt(request.getCreated_at())
-				.fileSize(request.getFile_size())
+				.blackboxUuid(request.getBlackboxUuid())
+				.streamStartedAt(request.getStreamStartedAt())
+				.createdAt(request.getCreatedAt())
+				.fileSize(request.getFileSize())
 				.duration(request.getDuration())
-				.objectKey(request.getObject_key())
-				.fileType(request.getFile_type())
+				.objectKey(request.getObjectKey())
+				.fileType(request.getFileType())
 				.build();
 		repository.save(metadata);
 	}
@@ -38,11 +38,11 @@ public class MetadataService {
 		);
 		return metadataList.stream()
 				.map(data -> MetadataResponse.builder()
-						.object_key(data.getObjectKey())
+						.objectKey(data.getObjectKey())
 						.duration(data.getDuration())
-						.created_at(data.getCreatedAt())
-						.file_size(data.getFileSize())
-						.file_type(data.getFileType()).build()
+						.createdAt(data.getCreatedAt())
+						.fileSize(data.getFileSize())
+						.fileType(data.getFileType()).build()
 				).toList();
 	}
 
