@@ -5,6 +5,8 @@ import com.neves.status.controller.dto.blackbox.BlackboxRegisterRequestDto;
 import com.neves.status.controller.dto.blackbox.BlackboxRenameRequestDto;
 import com.neves.status.repository.Blackbox;
 import com.neves.status.repository.BlackboxRepository;
+import com.neves.status.repository.Metadata;
+import com.neves.status.repository.MetadataRepository;
 import com.neves.status.utils.JwtUtils;
 import com.neves.status.utils.TestUtils;
 import jakarta.transaction.Transactional;
@@ -32,6 +34,8 @@ class BlackboxControllerTest {
     private ObjectMapper objectMapper;
     @Autowired
     private BlackboxRepository blackboxRepository;
+    @Autowired
+    private MetadataRepository metadataRepository;
 
     private static final String BASE_URL = "/blackboxes";
 
@@ -69,7 +73,7 @@ class BlackboxControllerTest {
     void getBlackboxListSuccess() throws Exception {
         // given
         Blackbox blackbox1 = Blackbox.builder()
-                .uuid(TestUtils.DEFAULT_BLACKBOX_UUID) // Corrected from DEFAULT_UUID
+                .uuid(TestUtils.DEFAULT_BLACKBOX_UUID)
                 .nickname("My Car")
                 .userId(TestUtils.TEST_USER_ID)
                 .createdAt(LocalDateTime.now())
@@ -90,7 +94,7 @@ class BlackboxControllerTest {
                         .header(JwtUtils.JWT_HEADER, TestUtils.DEFAULT_JWT))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
-                .andExpect(jsonPath("$[0].uuid").value(TestUtils.DEFAULT_BLACKBOX_UUID)) // Corrected from DEFAULT_UUID
+                .andExpect(jsonPath("$[0].uuid").value(TestUtils.DEFAULT_BLACKBOX_UUID))
                 .andExpect(jsonPath("$[0].nickname").value("My Car"))
                 .andExpect(jsonPath("$[1].nickname").value("My Bike"));
     }
@@ -159,4 +163,59 @@ class BlackboxControllerTest {
                         .content(requestBody))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    @DisplayName("최근 메타데이터의 마지막 시간이 30분 전인 경우 HEALTHY")
+    void getBlackboxStatusHealthy() throws Exception {
+        // given
+        String uuid = TestUtils.DEFAULT_BLACKBOX_UUID;
+        Blackbox blackbox = Blackbox.builder()
+                .uuid(uuid)
+                .nickname("My Car")
+                .userId(TestUtils.TEST_USER_ID)
+                .createdAt(LocalDateTime.now())
+                .build();
+        blackboxRepository.save(blackbox);
+
+        Metadata recentMetadata = Metadata.builder()
+                .id("1")
+                .blackbox(blackbox)
+                .createdAt(LocalDateTime.now().minusMinutes(30))
+                .build();
+        metadataRepository.save(recentMetadata);
+
+        // when & then
+        mockMvc.perform(get(BASE_URL + "/" + uuid + "/status")
+                        .header(JwtUtils.JWT_HEADER, TestUtils.DEFAULT_JWT))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.health_status").value("HEALTHY"));
+    }
+
+    @Test
+    @DisplayName("최근 메타데이터의 마지막 시간이 61분 전인 경우(1시간 이상) UNHEALTHY")
+    void getBlackboxStatusUnhealthy() throws Exception {
+        // given
+        String uuid = TestUtils.DEFAULT_BLACKBOX_UUID;
+        Blackbox blackbox = Blackbox.builder()
+                .uuid(uuid)
+                .nickname("My Car")
+                .userId(TestUtils.TEST_USER_ID)
+                .createdAt(LocalDateTime.now())
+                .build();
+        blackboxRepository.save(blackbox);
+
+        Metadata oldMetadata = Metadata.builder()
+                .id("1")
+                .blackbox(blackbox)
+                .createdAt(LocalDateTime.now().minusMinutes(61))
+                .build();
+        metadataRepository.save(oldMetadata);
+
+        // when & then
+        mockMvc.perform(get(BASE_URL + "/" + uuid + "/status")
+                        .header(JwtUtils.JWT_HEADER, TestUtils.DEFAULT_JWT))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.health_status").value("UNHEALTHY"));
+    }
+
 }
