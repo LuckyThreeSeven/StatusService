@@ -15,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.TestAnnotationUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -32,6 +30,8 @@ class BlackboxControllerTest {
 	@Autowired
 	private BlackboxRepository blackboxRepository;
 
+	private static final String BASE_URL = "/blackboxes";
+
 	@BeforeEach
 	void setUp() {
 		blackboxRepository.deleteAll();
@@ -39,22 +39,23 @@ class BlackboxControllerTest {
 
 	@Test
 	@DisplayName("블랙박스 등록 성공")
-	void register_integration_success() throws Exception {
-		// given - 테스트에 필요한 요청 DTO 생성
-		BlackboxRegisterRequestDto requestDto = new BlackboxRegisterRequestDto(TestUtils.DEFAULT_UUID, "my blackbox");
+	void registerBlackboxSuccess() throws Exception {
+		//given
+		String nickname = "my blackbox";
+		BlackboxRegisterRequestDto requestDto = new BlackboxRegisterRequestDto(TestUtils.DEFAULT_UUID, nickname);
 		String requestBody = objectMapper.writeValueAsString(requestDto);
 
-		mockMvc.perform(post("/blackboxes")
+		//when
+		mockMvc.perform(post(BASE_URL)
 						.header(JwtUtils.JWT_HEADER, TestUtils.DEFAULT_JWT)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(requestBody))
-				.andExpect(status().isOk()) // 200 OK 응답을 기대
-				.andDo(print());
+				.andExpect(status().isOk());
 
-		// then - DB에 블랙박스가 정상적으로 저장되었는지 검증
+		//then
 		Blackbox savedBlackbox = blackboxRepository.findByUuid(TestUtils.DEFAULT_UUID).orElse(null);
 		Assertions.assertThat(savedBlackbox).isNotNull();
-		Assertions.assertThat(savedBlackbox.getNickname()).isEqualTo("my blackbox");
+		Assertions.assertThat(savedBlackbox.getNickname()).isEqualTo(nickname);
 		Assertions.assertThat(savedBlackbox.getUserId()).isEqualTo(TestUtils.TEST_USER_ID);
 		Assertions.assertThat(savedBlackbox.getUuid()).isEqualTo(TestUtils.DEFAULT_UUID);
 	}
