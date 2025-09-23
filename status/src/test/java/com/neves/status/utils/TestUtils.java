@@ -22,7 +22,7 @@ public abstract class TestUtils {
 
 	public static final Metadata DEFAULT_METADATA = Metadata.builder()
 			.id(DEFAULT_METADATA_UUID)
-			.blackboxUuid(DEFAULT_BLACKBOX_UUID)
+			.blackbox(DEFAULT_BLACKBOX)
 			.streamStartedAt(DEFAULT_TIME)
 			.createdAt(DEFAULT_TIME)
 			.fileSize(101010L)
