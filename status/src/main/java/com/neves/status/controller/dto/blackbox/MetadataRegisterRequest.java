@@ -12,7 +12,6 @@ import lombok.ToString;
 @Getter @Setter
 @ToString
 @AllArgsConstructor
-@ToString
 public class MetadataRegisterRequest {
 	@Schema(description = "블랙박스 UUID", example = "123e4567-e89b-12d3-a456-426614174000")
 	@JsonProperty("blackbox_uuid")
