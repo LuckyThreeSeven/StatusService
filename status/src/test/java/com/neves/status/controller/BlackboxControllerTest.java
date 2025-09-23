@@ -2,6 +2,7 @@ package com.neves.status.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neves.status.controller.dto.blackbox.BlackboxRegisterRequestDto;
+import com.neves.status.controller.dto.blackbox.BlackboxRenameRequestDto;
 import com.neves.status.repository.Blackbox;
 import com.neves.status.repository.BlackboxRepository;
 import com.neves.status.utils.JwtUtils;
@@ -106,5 +107,56 @@ class BlackboxControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(0))
                 .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @Test
+    @DisplayName("블랙박스 이름 변경 성공")
+    void renameBlackboxSuccess() throws Exception {
+        // given
+        String uuid = TestUtils.DEFAULT_BLACKBOX_UUID;
+        String originalNickname = "기존 블랙박스 이름";
+        String newNickname = "새로운 블랙박스 이름";
+
+        Blackbox blackbox = Blackbox.builder()
+                .uuid(uuid)
+                .nickname(originalNickname)
+                .userId(TestUtils.TEST_USER_ID)
+                .createdAt(LocalDateTime.now())
+                .build();
+        blackboxRepository.save(blackbox);
+
+        BlackboxRenameRequestDto requestDto = new BlackboxRenameRequestDto(newNickname);
+        String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        // when
+        mockMvc.perform(put(BASE_URL + "/" + uuid)
+                        .header(JwtUtils.JWT_HEADER, TestUtils.DEFAULT_JWT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.uuid").value(uuid))
+                .andExpect(jsonPath("$.nickname").value(newNickname));
+
+        // then
+        Blackbox updatedBlackbox = blackboxRepository.findByUuid(uuid).orElseThrow();
+        Assertions.assertThat(updatedBlackbox.getNickname()).isEqualTo(newNickname);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 블랙박스 이름 변경 시 실패")
+    void renameBlackboxNotFound() throws Exception {
+        // given
+        String nonExistentUuid = "존재하지-않는-UUID";
+        String newNickname = "새로운 블랙박스 이름";
+
+        BlackboxRenameRequestDto requestDto = new BlackboxRenameRequestDto(newNickname);
+        String requestBody = objectMapper.writeValueAsString(requestDto);
+
+        // when & then
+        mockMvc.perform(put(BASE_URL + "/" + nonExistentUuid)
+                        .header(JwtUtils.JWT_HEADER, TestUtils.DEFAULT_JWT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isNotFound());
     }
 }
