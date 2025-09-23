@@ -50,7 +50,7 @@ class MetadataControllerTest {
 	public void createMetadata() throws Exception {
 		// given
 		MetadataRegisterRequest request = new MetadataRegisterRequest(
-				TestUtils.DEFAULT_METADATA.getBlackboxUuid(),
+				TestUtils.DEFAULT_METADATA.getBlackbox().getUuid(),
 				TestUtils.DEFAULT_METADATA.getStreamStartedAt(),
 				TestUtils.DEFAULT_METADATA.getCreatedAt(),
 				TestUtils.DEFAULT_METADATA.getFileSize(),
@@ -70,6 +70,6 @@ class MetadataControllerTest {
 		//then
 		Metadata savedMetadata = metadataRepository.findAll().getFirst();
 		assertThat(savedMetadata).isNotNull();
-		assertThat(savedMetadata.getBlackboxUuid()).isEqualTo(request.getBlackboxUuid());
+		assertThat(savedMetadata.getBlackbox().getUuid()).isEqualTo(request.getBlackboxUuid());
 	}
 }
