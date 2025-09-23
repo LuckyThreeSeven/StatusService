@@ -56,6 +56,9 @@ public class MetadataService {
 	public void delete(String metadataId) {
 		Metadata metadata = repository.findById(metadataId).orElseThrow(()
 				-> new NoSuchElementException("ID에 해당하는 메타데이터를 찾을 수 없습니다. ID: " + metadataId));
+		if (metadata.isDeleted()) {
+			throw new NoSuchElementException("ID에 해당하는 메타데이터를 찾을 수 없습니다. ID: " + metadataId);
+		}
 		metadata.setDeleted(true);
 	}
 
