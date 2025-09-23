@@ -42,7 +42,7 @@ class BlackboxControllerTest {
 	void registerBlackboxSuccess() throws Exception {
 		//given
 		String nickname = "my blackbox";
-		BlackboxRegisterRequestDto requestDto = new BlackboxRegisterRequestDto(TestUtils.DEFAULT_UUID, nickname);
+		BlackboxRegisterRequestDto requestDto = new BlackboxRegisterRequestDto(TestUtils.DEFAULT_BLACKBOX_UUID, nickname);
 		String requestBody = objectMapper.writeValueAsString(requestDto);
 
 		//when
@@ -53,10 +53,10 @@ class BlackboxControllerTest {
 				.andExpect(status().isOk());
 
 		//then
-		Blackbox savedBlackbox = blackboxRepository.findByUuid(TestUtils.DEFAULT_UUID).orElse(null);
+		Blackbox savedBlackbox = blackboxRepository.findByUuid(TestUtils.DEFAULT_BLACKBOX_UUID).orElse(null);
 		Assertions.assertThat(savedBlackbox).isNotNull();
 		Assertions.assertThat(savedBlackbox.getNickname()).isEqualTo(nickname);
 		Assertions.assertThat(savedBlackbox.getUserId()).isEqualTo(TestUtils.TEST_USER_ID);
-		Assertions.assertThat(savedBlackbox.getUuid()).isEqualTo(TestUtils.DEFAULT_UUID);
+		Assertions.assertThat(savedBlackbox.getUuid()).isEqualTo(TestUtils.DEFAULT_BLACKBOX_UUID);
 	}
 }

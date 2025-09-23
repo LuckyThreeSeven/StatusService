@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Log4j2
 @RequiredArgsConstructor
 @Tag(name = "Metadata", description = "영상 메타데이터를 위한 API")
 @RestController
@@ -35,6 +37,7 @@ public class MetadataController {
 	})
 	@PostMapping
 	public ResponseEntity<Object> create(@RequestBody MetadataRegisterRequest request) {
+		log.info("Received metadata registration request: {}", request);
 		metadataService.create(java.util.UUID.randomUUID(), request);
 		return ResponseEntity.status(201).build();
 	}
