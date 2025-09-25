@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class MetadataService {
 
 	public void create(UUID metadataId, MetadataRegisterRequest request) {
 		Blackbox blackbox = blackboxRepository.findByUuid(request.getBlackboxUuid())
-				.orElseThrow(() -> new IllegalArgumentException("UUID에 해당하는 블랙박스를 찾을 수 없습니다. UUID: : " + request.getBlackboxUuid()));
+				.orElse(null);
 
 		Metadata metadata = Metadata.builder()
 				.id(metadataId.toString())
@@ -36,6 +37,7 @@ public class MetadataService {
 				.duration(request.getDuration())
 				.objectKey(request.getObjectKey())
 				.fileType(request.getFileType())
+				.isDeleted(Objects.isNull(blackbox))
 				.build();
 		repository.save(metadata);
 	}
