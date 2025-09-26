@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     // 500 Internal Server Error
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
-        log.info("Unhandled exception occurred: {}", e.getMessage(), e);
+        log.error("Unhandled exception occurred: {}", e.getMessage(), e);
         ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 예상치 못한 오류가 발생했습니다.");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
