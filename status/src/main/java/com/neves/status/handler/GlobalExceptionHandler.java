@@ -20,14 +20,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    // 500 Internal Server Error
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception e) {
-        log.error("Unhandled exception occurred: {}", e.getMessage(), e);
-        ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 예상치 못한 오류가 발생했습니다.");
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     // 409 Conflict
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
