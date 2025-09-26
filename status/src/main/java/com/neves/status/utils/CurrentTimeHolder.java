@@ -2,7 +2,7 @@ package com.neves.status.utils;
 
 import java.time.LocalDateTime;
 
-public abstract class RequestContextHolder {
+public abstract class CurrentTimeHolder {
 	private static final ThreadLocal<LocalDateTime> requestTimeHolder = new ThreadLocal<>();
 
 	public static void clear() {
@@ -13,7 +13,7 @@ public abstract class RequestContextHolder {
 		requestTimeHolder.set(requestTime);
 	}
 
-	public static LocalDateTime get() {
+	public static LocalDateTime now() {
 		return requestTimeHolder.get();
 	}
 }

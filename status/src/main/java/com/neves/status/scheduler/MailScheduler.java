@@ -24,8 +24,7 @@ public class MailScheduler {
 	@Scheduled(cron = "${scheduler.disconnected}")
 	public void checkDisconnectedBlackboxes() {
 		log.info("Checking for disconnected blackboxes...");
-		LocalDateTime now = LocalDateTime.now();
-		List<BlackboxMailDto> disconnectedBlackbox = blackboxService.findRequiredMailBlackbox(now);
+		List<BlackboxMailDto> disconnectedBlackbox = blackboxService.findRequiredMailBlackbox();
 		for (BlackboxMailDto blackbox : disconnectedBlackbox) {
 			LocalDateTime dateLastConnected = sentBlackboxes.get(blackbox.getBlackboxId());
 			if (Objects.isNull(dateLastConnected) || !dateLastConnected.isEqual(blackbox.getLastConnectedAt())) {

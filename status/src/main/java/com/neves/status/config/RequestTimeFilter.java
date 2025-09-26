@@ -1,6 +1,6 @@
 package com.neves.status.config;
 
-import com.neves.status.utils.RequestContextHolder;
+import com.neves.status.utils.CurrentTimeHolder;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,11 +16,11 @@ public class RequestTimeFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		RequestContextHolder.set(LocalDateTime.now());
+		CurrentTimeHolder.set(LocalDateTime.now());
 		try {
 			chain.doFilter(request, response);
 		} finally {
-			RequestContextHolder.clear();
+			CurrentTimeHolder.clear();
 		}
 	}
 }
