@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     // 404 NotFound
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException e) {
-        log.error("Resource not found: {}", e.getMessage());
+        log.info("Resource not found: {}", e.getMessage());
         ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_FOUND, e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     // 500 Internal Server Error
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
-        log.error("Unhandled exception occurred: {}", e.getMessage(), e);
+        log.info("Unhandled exception occurred: {}", e.getMessage(), e);
         ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, "서버에 예상치 못한 오류가 발생했습니다.");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     // 409 Conflict
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
-        log.warn("Illegal argument / Conflict: {}", e.getMessage());
+        log.info("Illegal argument / Conflict: {}", e.getMessage());
         ErrorResponse response = ErrorResponse.of(HttpStatus.CONFLICT, e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
