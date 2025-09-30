@@ -1,6 +1,7 @@
 package com.neves.status.handler;
 
 
+import com.neves.status.utils.JwtUtils.InvalidJwtException;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -34,5 +35,10 @@ public class GlobalExceptionHandler {
         ErrorResponse response = ErrorResponse.of(HttpStatus.FORBIDDEN, e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
-
+    @ExceptionHandler(InvalidJwtException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidJwtException(InvalidJwtException e) {
+        log.info("Invalid JWT token: {}", e.getMessage());
+        ErrorResponse response = ErrorResponse.of(HttpStatus.UNAUTHORIZED, e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
 }
