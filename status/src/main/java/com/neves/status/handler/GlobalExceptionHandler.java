@@ -28,5 +28,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthorizationException(AuthorizationException e) {
+        log.warn("Authorization failed: {}", e.getMessage());
+        ErrorResponse response = ErrorResponse.of(HttpStatus.FORBIDDEN, e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
 
 }
