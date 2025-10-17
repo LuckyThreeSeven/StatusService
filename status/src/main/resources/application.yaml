@@ -38,3 +38,6 @@ management:
       base-path: /prom
       exposure:
         include: prometheus
+
+server:
+  forward-headers-strategy: framework
