@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @FeignClient(name = "mailClient", url = "${feign.mail.url}")
 public interface MailClient {
 	String BLACKBOX_UNCONNECTED = "BLACKBOX_UNCONNECTED";
-	@PostMapping("/api/email/status")
+	@PostMapping("/email/status")
 	void sendMail(MailDto dto);
 }
