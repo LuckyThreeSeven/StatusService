@@ -16,7 +16,8 @@ public interface MetadataRepository extends JpaRepository<Metadata, String> {
 	@Query("SELECT m FROM Metadata"
 			+ " m WHERE m.blackbox.uuid = :uuid"
 			+ " AND m.isDeleted = false"
-			+ " AND m.createdAt BETWEEN :start AND :end")
+			+ " AND m.createdAt BETWEEN :start AND :end"
+			+ " order by m.createdAt")
 	List<Metadata> findByBlackboxUuidBetween(
 			@Param("uuid") String uuid,
 			@Param("start") LocalDateTime start,
