@@ -38,6 +38,9 @@ management:
       base-path: /prom
       exposure:
         include: prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 server:
   forward-headers-strategy: framework
