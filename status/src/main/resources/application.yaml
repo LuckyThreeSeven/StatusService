@@ -37,7 +37,12 @@ management:
     web:
       base-path: /prom
       exposure:
-        include: prometheus
+        include: prometheus, health
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
   metrics:
     tags:
       application: ${spring.application.name}
